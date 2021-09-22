@@ -1,0 +1,7 @@
+book_filename: "bookdown-start"
+chapter_name: "Capítulo "
+repo: https://ortiz-cevallos.github.io/ESTABILIDAD_INTRO/bookdown-start
+output_dir: docs
+rmd_files: ["index.Rmd", "06-references.Rmd"]
+clean: [packages.bib, bookdown.bbl]
+new_session: yes
