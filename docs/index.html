@@ -53,6 +53,70 @@
 
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -109,6 +173,91 @@
 <p>El caso de las remesas en El Salvador.</p>
 <p>Para conocer mejor esta metodología por favor revisar
 <a href="http://www.secmca.org/wp-content/uploads/2019/05/Nota-Econ%C3%B3mica-Regional-No.-102.pdf">Ortiz (2019)</a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;zoo&quot;</span>)</span>
+<span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;xts&quot;</span>)</span>
+<span id="cb1-3"><a href="index.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
+<span id="cb1-4"><a href="index.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</span>
+<span id="cb1-5"><a href="index.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggrepel&quot;</span>)</span>
+<span id="cb1-6"><a href="index.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggthemes&quot;</span>)</span>
+<span id="cb1-7"><a href="index.html#cb1-7" aria-hidden="true" tabindex="-1"></a>REMESAS<span class="ot">&lt;-</span><span class="fu">as.xts</span>(<span class="fu">read.zoo</span>(<span class="st">&quot;REMESAS.csv&quot;</span>, <span class="at">index.column =</span> <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">format =</span> <span class="st">&quot;%d/%m/%Y&quot;</span>))</span>
+<span id="cb1-8"><a href="index.html#cb1-8" aria-hidden="true" tabindex="-1"></a>SV<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">date=</span><span class="fu">index</span>(REMESAS), <span class="fu">coredata</span>(REMESAS))</span>
+<span id="cb1-9"><a href="index.html#cb1-9" aria-hidden="true" tabindex="-1"></a>SV          <span class="ot">&lt;-</span><span class="fu">mutate</span>(SV, <span class="at">SLV_R  =</span>  SLV<span class="sc">/</span>(IPC_SV<span class="sc">/</span><span class="dv">100</span>))</span>
+<span id="cb1-10"><a href="index.html#cb1-10" aria-hidden="true" tabindex="-1"></a>SV          <span class="ot">&lt;-</span><span class="fu">mutate</span>(SV, <span class="at">DIFF   =</span> SLV_R<span class="sc">-</span><span class="fu">lag</span>(SLV_R, <span class="at">n=</span><span class="dv">12</span>))</span>
+<span id="cb1-11"><a href="index.html#cb1-11" aria-hidden="true" tabindex="-1"></a>SV          <span class="ot">&lt;-</span><span class="fu">mutate</span>(SV, <span class="at">G1     =</span> (DIFF<span class="sc">/</span>(<span class="fu">lag</span>(SLV_R, <span class="at">n=</span><span class="dv">12</span>)))<span class="sc">*</span><span class="dv">100</span>)</span>
+<span id="cb1-12"><a href="index.html#cb1-12" aria-hidden="true" tabindex="-1"></a>BASE<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">date=</span>SV<span class="sc">$</span>date, <span class="fu">coredata</span>(SV<span class="sc">$</span>G1))</span>
+<span id="cb1-13"><a href="index.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(BASE)<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;date&quot;</span>, <span class="st">&quot;SV&quot;</span>)</span>
+<span id="cb1-14"><a href="index.html#cb1-14" aria-hidden="true" tabindex="-1"></a>inicial       <span class="ot">&lt;-</span><span class="st">&quot;2002-01-01&quot;</span></span>
+<span id="cb1-15"><a href="index.html#cb1-15" aria-hidden="true" tabindex="-1"></a>finalista     <span class="ot">&lt;-</span><span class="st">&quot;2021-07-01&quot;</span></span>
+<span id="cb1-16"><a href="index.html#cb1-16" aria-hidden="true" tabindex="-1"></a>Data          <span class="ot">&lt;-</span> <span class="fu">filter</span>(BASE, date<span class="sc">&gt;=</span><span class="st">&quot;2002-01-01&quot;</span><span class="sc">&amp;</span>date<span class="sc">&lt;=</span><span class="st">&quot;2021-07-01&quot;</span>)</span>
+<span id="cb1-17"><a href="index.html#cb1-17" aria-hidden="true" tabindex="-1"></a>dates         <span class="ot">&lt;-</span> Data[,<span class="st">&#39;date&#39;</span>]</span>
+<span id="cb1-18"><a href="index.html#cb1-18" aria-hidden="true" tabindex="-1"></a>LARGO         <span class="ot">&lt;-</span> <span class="fu">length</span>(dates)</span>
+<span id="cb1-19"><a href="index.html#cb1-19" aria-hidden="true" tabindex="-1"></a>missing.color <span class="ot">&lt;-</span> <span class="st">&quot;white&quot;</span></span>
+<span id="cb1-20"><a href="index.html#cb1-20" aria-hidden="true" tabindex="-1"></a>colours1T     <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;forestgreen&#39;</span>,<span class="st">&#39;yellow&#39;</span>,<span class="st">&#39;red3&#39;</span>)</span>
+<span id="cb1-21"><a href="index.html#cb1-21" aria-hidden="true" tabindex="-1"></a>DIR           <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb1-22"><a href="index.html#cb1-22" aria-hidden="true" tabindex="-1"></a>VARIABLES     <span class="ot">&lt;-</span> <span class="fu">colnames</span>(Data)</span>
+<span id="cb1-23"><a href="index.html#cb1-23" aria-hidden="true" tabindex="-1"></a>VAR           <span class="ot">&lt;-</span> Data[, VARIABLES[<span class="dv">2</span>]]</span>
+<span id="cb1-24"><a href="index.html#cb1-24" aria-hidden="true" tabindex="-1"></a>VAR.DIR       <span class="ot">&lt;-</span> VAR<span class="sc">*</span>DIR</span>
+<span id="cb1-25"><a href="index.html#cb1-25" aria-hidden="true" tabindex="-1"></a>EMP           <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(VAR.DIR)</span>
+<span id="cb1-26"><a href="index.html#cb1-26" aria-hidden="true" tabindex="-1"></a>QUANT         <span class="ot">&lt;-</span> <span class="fu">EMP</span>(VAR.DIR)</span>
+<span id="cb1-27"><a href="index.html#cb1-27" aria-hidden="true" tabindex="-1"></a>z             <span class="ot">&lt;-</span> QUANT</span>
+<span id="cb1-28"><a href="index.html#cb1-28" aria-hidden="true" tabindex="-1"></a>zz            <span class="ot">&lt;-</span> z</span>
+<span id="cb1-29"><a href="index.html#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">assign</span>(<span class="fu">paste0</span>(VARIABLES[<span class="dv">2</span>],<span class="st">&#39;.s.lim&#39;</span>), <span class="fu">max</span>(VAR,<span class="at">na.rm=</span>T)<span class="sc">+</span><span class="fu">sd</span>(VAR.DIR,<span class="at">na.rm=</span>T)<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb1-30"><a href="index.html#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">assign</span>(<span class="fu">paste0</span>(VARIABLES[<span class="dv">2</span>],<span class="st">&#39;.i.lim&#39;</span>), <span class="fu">min</span>(VAR,<span class="at">na.rm=</span>T)<span class="sc">-</span><span class="fu">sd</span>(VAR.DIR,<span class="at">na.rm=</span>T)<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb1-31"><a href="index.html#cb1-31" aria-hidden="true" tabindex="-1"></a>dates.s   <span class="ot">&lt;-</span> Data<span class="sc">$</span>date[<span class="dv">1</span>]</span>
+<span id="cb1-32"><a href="index.html#cb1-32" aria-hidden="true" tabindex="-1"></a>dates     <span class="ot">&lt;-</span> Data<span class="sc">$</span>date</span>
+<span id="cb1-33"><a href="index.html#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="fu">seq_along</span>(dates)[<span class="sc">-</span><span class="dv">1</span>]) {</span>
+<span id="cb1-34"><a href="index.html#cb1-34" aria-hidden="true" tabindex="-1"></a>  mean.day <span class="ot">&lt;-</span> dates[t<span class="dv">-1</span>] <span class="sc">+</span> ((dates[t]<span class="sc">-</span>dates[t<span class="dv">-1</span>])<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb1-35"><a href="index.html#cb1-35" aria-hidden="true" tabindex="-1"></a>  dates.s <span class="ot">&lt;-</span> <span class="fu">c</span>(dates.s, mean.day, dates[t])</span>
+<span id="cb1-36"><a href="index.html#cb1-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-37"><a href="index.html#cb1-37" aria-hidden="true" tabindex="-1"></a>dates.s <span class="ot">&lt;-</span> <span class="fu">c</span>(dates.s[<span class="dv">1</span>]<span class="sc">-</span><span class="dv">45</span>, dates.s, dates.s[<span class="fu">length</span>(dates.s)]<span class="sc">+</span><span class="dv">45</span>)</span>
+<span id="cb1-38"><a href="index.html#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">assign</span>(<span class="fu">paste0</span>(VARIABLES[<span class="dv">2</span>]), VAR.DIR)</span>
+<span id="cb1-39"><a href="index.html#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="fu">seq_along</span>(dates)[<span class="sc">-</span><span class="fu">length</span>(dates)]) {</span>
+<span id="cb1-40"><a href="index.html#cb1-40" aria-hidden="true" tabindex="-1"></a>  pos <span class="ot">&lt;-</span> <span class="fu">which</span>(dates[t]<span class="sc">==</span>dates.s)</span>
+<span id="cb1-41"><a href="index.html#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assign</span>(<span class="fu">paste0</span>(VARIABLES[<span class="dv">2</span>],<span class="st">&#39;.t.&#39;</span>,t),dates.s[pos<span class="sc">+</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>)])</span>
+<span id="cb1-42"><a href="index.html#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(zz[t])) {</span>
+<span id="cb1-43"><a href="index.html#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">assign</span>(<span class="fu">paste0</span>(VARIABLES[<span class="dv">2</span>],<span class="st">&#39;.c.&#39;</span>,t),<span class="fu">rgb</span>(<span class="fu">matrix</span>(<span class="fu">col2rgb</span>(missing.color),<span class="dv">1</span>,<span class="dv">3</span>)<span class="sc">/</span><span class="dv">255</span>))</span>
+<span id="cb1-44"><a href="index.html#cb1-44" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb1-45"><a href="index.html#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">assign</span>(<span class="fu">paste0</span>(VARIABLES[<span class="dv">2</span>],<span class="st">&#39;.c.&#39;</span>,t),<span class="fu">rgb</span>(<span class="fu">colorRamp</span>(colours1T)(z[t])<span class="sc">/</span><span class="dv">255</span>))</span>
+<span id="cb1-46"><a href="index.html#cb1-46" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-47"><a href="index.html#cb1-47" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-48"><a href="index.html#cb1-48" aria-hidden="true" tabindex="-1"></a>DATOS<span class="ot">&lt;-</span><span class="fu">select</span>(Data, date, SV)</span>
+<span id="cb1-49"><a href="index.html#cb1-49" aria-hidden="true" tabindex="-1"></a>DATOS<span class="sc">$</span>date<span class="ot">&lt;-</span><span class="fu">as.Date</span>(DATOS<span class="sc">$</span>date)</span>
+<span id="cb1-50"><a href="index.html#cb1-50" aria-hidden="true" tabindex="-1"></a>DATOS<span class="sc">$</span>MAX<span class="ot">&lt;-</span>zz</span>
+<span id="cb1-51"><a href="index.html#cb1-51" aria-hidden="true" tabindex="-1"></a>DATOS<span class="sc">$</span>INICIO<span class="ot">&lt;-</span><span class="fu">as.Date</span>(DATOS<span class="sc">$</span>date)<span class="sc">-</span><span class="dv">46</span></span>
+<span id="cb1-52"><a href="index.html#cb1-52" aria-hidden="true" tabindex="-1"></a>DATOS<span class="sc">$</span>FINAL <span class="ot">&lt;-</span><span class="fu">as.Date</span>(DATOS<span class="sc">$</span>date)<span class="sc">+</span><span class="dv">46</span></span>
+<span id="cb1-53"><a href="index.html#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="fu">seq_along</span>(dates)[<span class="fu">c</span>(<span class="sc">-</span>LARGO)]) {</span>
+<span id="cb1-54"><a href="index.html#cb1-54" aria-hidden="true" tabindex="-1"></a>  DATOS<span class="sc">$</span>COLOR[t]<span class="ot">&lt;-</span><span class="fu">get</span>(<span class="fu">paste0</span>(VARIABLES[<span class="dv">2</span>],<span class="st">&#39;.c.&#39;</span>,t))</span>
+<span id="cb1-55"><a href="index.html#cb1-55" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-56"><a href="index.html#cb1-56" aria-hidden="true" tabindex="-1"></a>DATOS<span class="sc">$</span>COLOR[LARGO]<span class="ot">&lt;-</span><span class="fu">get</span>(<span class="fu">paste0</span>(VARIABLES[<span class="dv">2</span>],<span class="st">&#39;.c.&#39;</span>,LARGO<span class="dv">-1</span>))</span>
+<span id="cb1-57"><a href="index.html#cb1-57" aria-hidden="true" tabindex="-1"></a>P_2  <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&#39;+geom_rect(data = DATOS,aes(xmin =as.Date(</span><span class="sc">\&#39;</span><span class="st">&#39;</span>,DATOS<span class="sc">$</span>INICIO[<span class="dv">1</span>],<span class="st">&#39;</span><span class="sc">\&#39;</span><span class="st">), xmax =as.Date(</span><span class="sc">\&#39;</span><span class="st">&#39;</span>,DATOS<span class="sc">$</span>FINAL[<span class="dv">1</span>],<span class="st">&#39;</span><span class="sc">\&#39;</span><span class="st">),ymin = -Inf, ymax = Inf),fill =</span><span class="sc">\&#39;</span><span class="st">&#39;</span>,DATOS<span class="sc">$</span>COLOR[<span class="dv">1</span>],<span class="st">&#39;</span><span class="sc">\&#39;</span><span class="st">,alpha = 0.05, color=</span><span class="sc">\&#39;</span><span class="st">transparent</span><span class="sc">\&#39;</span><span class="st">)&#39;</span>)</span>
+<span id="cb1-58"><a href="index.html#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>LARGO){</span>
+<span id="cb1-59"><a href="index.html#cb1-59" aria-hidden="true" tabindex="-1"></a>  P_2  <span class="ot">&lt;-</span> <span class="fu">paste0</span>(P_2, <span class="st">&#39;+geom_rect(data = DATOS,aes(xmin =as.Date(</span><span class="sc">\&#39;</span><span class="st">&#39;</span>,DATOS<span class="sc">$</span>INICIO[j],<span class="st">&#39;</span><span class="sc">\&#39;</span><span class="st">), xmax =as.Date(</span><span class="sc">\&#39;</span><span class="st">&#39;</span>,DATOS<span class="sc">$</span>FINAL[j],<span class="st">&#39;</span><span class="sc">\&#39;</span><span class="st">),ymin = -Inf, ymax = Inf),fill =</span><span class="sc">\&#39;</span><span class="st">&#39;</span>,DATOS<span class="sc">$</span>COLOR[j],<span class="st">&#39;</span><span class="sc">\&#39;</span><span class="st">,alpha = 0.05, color=</span><span class="sc">\&#39;</span><span class="st">transparent</span><span class="sc">\&#39;</span><span class="st">)&#39;</span>)</span>
+<span id="cb1-60"><a href="index.html#cb1-60" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-61"><a href="index.html#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="index.html#cb1-62" aria-hidden="true" tabindex="-1"></a>P_1<span class="ot">&lt;-</span><span class="st">&quot;ggplot(data = DATOS, aes(x = date, y=SV))+labs(y=</span><span class="sc">\&#39;\&#39;</span><span class="st">, x=</span><span class="sc">\&#39;\&#39;</span><span class="st">)&quot;</span></span>
+<span id="cb1-63"><a href="index.html#cb1-63" aria-hidden="true" tabindex="-1"></a>P  <span class="ot">&lt;-</span><span class="fu">paste0</span>(P_1,P_2)</span>
+<span id="cb1-64"><a href="index.html#cb1-64" aria-hidden="true" tabindex="-1"></a>PS <span class="ot">&lt;-</span> <span class="fu">eval</span>(<span class="fu">parse</span>(<span class="at">text=</span>P))</span>
+<span id="cb1-65"><a href="index.html#cb1-65" aria-hidden="true" tabindex="-1"></a>PS <span class="ot">&lt;-</span>PS<span class="sc">+</span><span class="fu">geom_line</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>)<span class="sc">+</span></span>
+<span id="cb1-66"><a href="index.html#cb1-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Tasa de crecimiento anual de las remesas en términos reales y mapa de riesgo&quot;</span>)<span class="sc">+</span></span>
+<span id="cb1-67"><a href="index.html#cb1-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept=</span><span class="dv">0</span>), <span class="at">color=</span><span class="st">&quot;black&quot;</span>,<span class="at">size =</span> <span class="fl">1.0</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)</span>
+<span id="cb1-68"><a href="index.html#cb1-68" aria-hidden="true" tabindex="-1"></a>PS <span class="ot">&lt;-</span>PS<span class="sc">+</span><span class="fu">theme_classic</span>()<span class="sc">+</span><span class="fu">theme</span>(</span>
+<span id="cb1-69"><a href="index.html#cb1-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">1.0</span>),</span>
+<span id="cb1-70"><a href="index.html#cb1-70" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.line.y =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">1.0</span>),</span>
+<span id="cb1-71"><a href="index.html#cb1-71" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.line.y.right =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-72"><a href="index.html#cb1-72" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb1-73"><a href="index.html#cb1-73" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-74"><a href="index.html#cb1-74" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.text  =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-75"><a href="index.html#cb1-75" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.title   =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face=</span><span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb1-76"><a href="index.html#cb1-76" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">size =</span> <span class="fl">0.5</span>,</span>
+<span id="cb1-77"><a href="index.html#cb1-77" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">linetype =</span> <span class="st">&#39;solid&#39;</span>, <span class="at">colour =</span> <span class="st">&quot;#EAEAF2&quot;</span>),</span>
+<span id="cb1-78"><a href="index.html#cb1-78" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.text.x =</span> <span class="fu">element_text</span>( <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb1-79"><a href="index.html#cb1-79" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.text.y =</span> <span class="fu">element_text</span>( <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">8</span>)</span>
+<span id="cb1-80"><a href="index.html#cb1-80" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-81"><a href="index.html#cb1-81" aria-hidden="true" tabindex="-1"></a>PS <span class="ot">&lt;-</span>PS<span class="sc">+</span><span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">&quot;24 month&quot;</span>, <span class="at">date_labels =</span> <span class="st">&quot;%Y&quot;</span>)<span class="sc">+</span></span>
+<span id="cb1-82"><a href="index.html#cb1-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">50</span>,<span class="at">by=</span><span class="dv">5</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">50</span>))<span class="sc">+</span></span>
+<span id="cb1-83"><a href="index.html#cb1-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span>  <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">&quot;2002-01-01&quot;</span>, <span class="st">&quot;2021-07-15&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a>PS</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 
 </div>
 </div>
@@ -161,7 +310,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["bookdown-start.pdf", "bookdown-start.epub"],
 "toc": {
 "collapse": "subsection",
 "download": ["pdf", "epub"]
