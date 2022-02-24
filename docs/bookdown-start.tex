@@ -116,7 +116,7 @@
 
 \title{INTRODUCCIÓN A LA ESTABILIDAD FINANCIERA}
 \author{LUIS ORTIZ-CEVALLOS}
-\date{2021-09-22}
+\date{2022-02-24}
 
 \begin{document}
 \maketitle
@@ -131,8 +131,8 @@
 \hypertarget{el-mapa-de-riesgos}{%
 \section{El mapa de riesgos}\label{el-mapa-de-riesgos}}
 
-\hypertarget{aplicaciuxf3n-para-una-series}{%
-\subsection{Aplicación para una series}\label{aplicaciuxf3n-para-una-series}}
+\hypertarget{aplicaciuxf3n-para-una-serie}{%
+\subsection{Aplicación para una serie}\label{aplicaciuxf3n-para-una-serie}}
 
 El caso de las remesas en El Salvador.
 
@@ -147,88 +147,105 @@ Para conocer mejor esta metodología por favor revisar
 \FunctionTok{library}\NormalTok{(}\StringTok{"ggplot2"}\NormalTok{)}
 \FunctionTok{library}\NormalTok{(}\StringTok{"ggrepel"}\NormalTok{)}
 \FunctionTok{library}\NormalTok{(}\StringTok{"ggthemes"}\NormalTok{)}
-\NormalTok{REMESAS}\OtherTok{\textless{}{-}}\FunctionTok{as.xts}\NormalTok{(}\FunctionTok{read.zoo}\NormalTok{(}\StringTok{"REMESAS.csv"}\NormalTok{, }\AttributeTok{index.column =} \DecValTok{1}\NormalTok{, }\AttributeTok{sep =} \StringTok{";"}\NormalTok{, }\AttributeTok{header=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{format =} \StringTok{"\%d/\%m/\%Y"}\NormalTok{))}
-\NormalTok{SV}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{date=}\FunctionTok{index}\NormalTok{(REMESAS), }\FunctionTok{coredata}\NormalTok{(REMESAS))}
-\NormalTok{SV          }\OtherTok{\textless{}{-}}\FunctionTok{mutate}\NormalTok{(SV, }\AttributeTok{SLV\_R  =}\NormalTok{  SLV}\SpecialCharTok{/}\NormalTok{(IPC\_SV}\SpecialCharTok{/}\DecValTok{100}\NormalTok{))}
-\NormalTok{SV          }\OtherTok{\textless{}{-}}\FunctionTok{mutate}\NormalTok{(SV, }\AttributeTok{DIFF   =}\NormalTok{ SLV\_R}\SpecialCharTok{{-}}\FunctionTok{lag}\NormalTok{(SLV\_R, }\AttributeTok{n=}\DecValTok{12}\NormalTok{))}
-\NormalTok{SV          }\OtherTok{\textless{}{-}}\FunctionTok{mutate}\NormalTok{(SV, }\AttributeTok{G1     =}\NormalTok{ (DIFF}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{lag}\NormalTok{(SLV\_R, }\AttributeTok{n=}\DecValTok{12}\NormalTok{)))}\SpecialCharTok{*}\DecValTok{100}\NormalTok{)}
-\NormalTok{BASE}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{date=}\NormalTok{SV}\SpecialCharTok{$}\NormalTok{date, }\FunctionTok{coredata}\NormalTok{(SV}\SpecialCharTok{$}\NormalTok{G1))}
-\FunctionTok{colnames}\NormalTok{(BASE)}\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"date"}\NormalTok{, }\StringTok{"SV"}\NormalTok{)}
-\NormalTok{inicial       }\OtherTok{\textless{}{-}}\StringTok{"2002{-}01{-}01"}
-\NormalTok{finalista     }\OtherTok{\textless{}{-}}\StringTok{"2021{-}07{-}01"}
-\NormalTok{Data          }\OtherTok{\textless{}{-}} \FunctionTok{filter}\NormalTok{(BASE, date}\SpecialCharTok{\textgreater{}=}\StringTok{"2002{-}01{-}01"}\SpecialCharTok{\&}\NormalTok{date}\SpecialCharTok{\textless{}=}\StringTok{"2021{-}07{-}01"}\NormalTok{)}
-\NormalTok{dates         }\OtherTok{\textless{}{-}}\NormalTok{ Data[,}\StringTok{\textquotesingle{}date\textquotesingle{}}\NormalTok{]}
-\NormalTok{LARGO         }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(dates)}
+\NormalTok{REMESAS }\OtherTok{\textless{}{-}} \FunctionTok{as.xts}\NormalTok{(}\FunctionTok{read.zoo}\NormalTok{(}\StringTok{"REMESAS.csv"}\NormalTok{, }\AttributeTok{index.column =} \DecValTok{1}\NormalTok{, }\AttributeTok{sep =} \StringTok{";"}\NormalTok{,}
+    \AttributeTok{header =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{format =} \StringTok{"\%d/\%m/\%Y"}\NormalTok{))}
+\NormalTok{SV }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{date =} \FunctionTok{index}\NormalTok{(REMESAS), }\FunctionTok{coredata}\NormalTok{(REMESAS))}
+\NormalTok{SV }\OtherTok{\textless{}{-}} \FunctionTok{mutate}\NormalTok{(SV, }\AttributeTok{SLV\_R =}\NormalTok{ SLV}\SpecialCharTok{/}\NormalTok{(IPC\_SV}\SpecialCharTok{/}\DecValTok{100}\NormalTok{))}
+\NormalTok{SV }\OtherTok{\textless{}{-}} \FunctionTok{mutate}\NormalTok{(SV, }\AttributeTok{DIFF =}\NormalTok{ SLV\_R }\SpecialCharTok{{-}} \FunctionTok{lag}\NormalTok{(SLV\_R, }\AttributeTok{n =} \DecValTok{12}\NormalTok{))}
+\NormalTok{SV }\OtherTok{\textless{}{-}} \FunctionTok{mutate}\NormalTok{(SV, }\AttributeTok{G1 =}\NormalTok{ (DIFF}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{lag}\NormalTok{(SLV\_R, }\AttributeTok{n =} \DecValTok{12}\NormalTok{))) }\SpecialCharTok{*} \DecValTok{100}\NormalTok{)}
+\NormalTok{BASE }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{date =}\NormalTok{ SV}\SpecialCharTok{$}\NormalTok{date, }\FunctionTok{coredata}\NormalTok{(SV}\SpecialCharTok{$}\NormalTok{G1))}
+\FunctionTok{colnames}\NormalTok{(BASE) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"date"}\NormalTok{, }\StringTok{"SV"}\NormalTok{)}
+\NormalTok{inicial }\OtherTok{\textless{}{-}} \StringTok{"2002{-}01{-}01"}
+\NormalTok{finalista }\OtherTok{\textless{}{-}} \StringTok{"2021{-}09{-}01"}
+\NormalTok{Data }\OtherTok{\textless{}{-}} \FunctionTok{filter}\NormalTok{(BASE, date }\SpecialCharTok{\textgreater{}=} \StringTok{"2002{-}01{-}01"} \SpecialCharTok{\&}\NormalTok{ date }\SpecialCharTok{\textless{}=} \StringTok{"2021{-}09{-}01"}\NormalTok{)}
+\NormalTok{dates }\OtherTok{\textless{}{-}}\NormalTok{ Data[, }\StringTok{"date"}\NormalTok{]}
+\NormalTok{LARGO }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(dates)}
 \NormalTok{missing.color }\OtherTok{\textless{}{-}} \StringTok{"white"}
-\NormalTok{colours1T     }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}forestgreen\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}yellow\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}red3\textquotesingle{}}\NormalTok{)}
-\NormalTok{DIR           }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\DecValTok{1}
-\NormalTok{VARIABLES     }\OtherTok{\textless{}{-}} \FunctionTok{colnames}\NormalTok{(Data)}
-\NormalTok{VAR           }\OtherTok{\textless{}{-}}\NormalTok{ Data[, VARIABLES[}\DecValTok{2}\NormalTok{]]}
-\NormalTok{VAR.DIR       }\OtherTok{\textless{}{-}}\NormalTok{ VAR}\SpecialCharTok{*}\NormalTok{DIR}
-\NormalTok{EMP           }\OtherTok{\textless{}{-}} \FunctionTok{ecdf}\NormalTok{(VAR.DIR)}
-\NormalTok{QUANT         }\OtherTok{\textless{}{-}} \FunctionTok{EMP}\NormalTok{(VAR.DIR)}
-\NormalTok{z             }\OtherTok{\textless{}{-}}\NormalTok{ QUANT}
-\NormalTok{zz            }\OtherTok{\textless{}{-}}\NormalTok{ z}
-\FunctionTok{assign}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{],}\StringTok{\textquotesingle{}.s.lim\textquotesingle{}}\NormalTok{), }\FunctionTok{max}\NormalTok{(VAR,}\AttributeTok{na.rm=}\NormalTok{T)}\SpecialCharTok{+}\FunctionTok{sd}\NormalTok{(VAR.DIR,}\AttributeTok{na.rm=}\NormalTok{T)}\SpecialCharTok{/}\DecValTok{2}\NormalTok{)}
-\FunctionTok{assign}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{],}\StringTok{\textquotesingle{}.i.lim\textquotesingle{}}\NormalTok{), }\FunctionTok{min}\NormalTok{(VAR,}\AttributeTok{na.rm=}\NormalTok{T)}\SpecialCharTok{{-}}\FunctionTok{sd}\NormalTok{(VAR.DIR,}\AttributeTok{na.rm=}\NormalTok{T)}\SpecialCharTok{/}\DecValTok{2}\NormalTok{)}
-\NormalTok{dates.s   }\OtherTok{\textless{}{-}}\NormalTok{ Data}\SpecialCharTok{$}\NormalTok{date[}\DecValTok{1}\NormalTok{]}
-\NormalTok{dates     }\OtherTok{\textless{}{-}}\NormalTok{ Data}\SpecialCharTok{$}\NormalTok{date}
+\NormalTok{colours1T }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"forestgreen"}\NormalTok{, }\StringTok{"yellow"}\NormalTok{, }\StringTok{"red3"}\NormalTok{)}
+\NormalTok{DIR }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\DecValTok{1}
+\NormalTok{VARIABLES }\OtherTok{\textless{}{-}} \FunctionTok{colnames}\NormalTok{(Data)}
+\NormalTok{VAR }\OtherTok{\textless{}{-}}\NormalTok{ Data[, VARIABLES[}\DecValTok{2}\NormalTok{]]}
+\NormalTok{VAR.DIR }\OtherTok{\textless{}{-}}\NormalTok{ VAR }\SpecialCharTok{*}\NormalTok{ DIR}
+\NormalTok{EMP }\OtherTok{\textless{}{-}} \FunctionTok{ecdf}\NormalTok{(VAR.DIR)}
+\NormalTok{QUANT }\OtherTok{\textless{}{-}} \FunctionTok{EMP}\NormalTok{(VAR.DIR)}
+\NormalTok{z }\OtherTok{\textless{}{-}}\NormalTok{ QUANT}
+\NormalTok{zz }\OtherTok{\textless{}{-}}\NormalTok{ z}
+\FunctionTok{assign}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{], }\StringTok{".s.lim"}\NormalTok{), }\FunctionTok{max}\NormalTok{(VAR, }\AttributeTok{na.rm =}\NormalTok{ T) }\SpecialCharTok{+}
+    \FunctionTok{sd}\NormalTok{(VAR.DIR, }\AttributeTok{na.rm =}\NormalTok{ T)}\SpecialCharTok{/}\DecValTok{2}\NormalTok{)}
+\FunctionTok{assign}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{], }\StringTok{".i.lim"}\NormalTok{), }\FunctionTok{min}\NormalTok{(VAR, }\AttributeTok{na.rm =}\NormalTok{ T) }\SpecialCharTok{{-}}
+    \FunctionTok{sd}\NormalTok{(VAR.DIR, }\AttributeTok{na.rm =}\NormalTok{ T)}\SpecialCharTok{/}\DecValTok{2}\NormalTok{)}
+\NormalTok{dates.s }\OtherTok{\textless{}{-}}\NormalTok{ Data}\SpecialCharTok{$}\NormalTok{date[}\DecValTok{1}\NormalTok{]}
+\NormalTok{dates }\OtherTok{\textless{}{-}}\NormalTok{ Data}\SpecialCharTok{$}\NormalTok{date}
 \ControlFlowTok{for}\NormalTok{ (t }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(dates)[}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{]) \{}
-\NormalTok{  mean.day }\OtherTok{\textless{}{-}}\NormalTok{ dates[t}\DecValTok{{-}1}\NormalTok{] }\SpecialCharTok{+}\NormalTok{ ((dates[t]}\SpecialCharTok{{-}}\NormalTok{dates[t}\DecValTok{{-}1}\NormalTok{])}\SpecialCharTok{/}\DecValTok{2}\NormalTok{)}
-\NormalTok{  dates.s }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(dates.s, mean.day, dates[t])}
+\NormalTok{    mean.day }\OtherTok{\textless{}{-}}\NormalTok{ dates[t }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{] }\SpecialCharTok{+}\NormalTok{ ((dates[t] }\SpecialCharTok{{-}}\NormalTok{ dates[t }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{])}\SpecialCharTok{/}\DecValTok{2}\NormalTok{)}
+\NormalTok{    dates.s }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(dates.s, mean.day, dates[t])}
 \NormalTok{\}}
-\NormalTok{dates.s }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(dates.s[}\DecValTok{1}\NormalTok{]}\SpecialCharTok{{-}}\DecValTok{45}\NormalTok{, dates.s, dates.s[}\FunctionTok{length}\NormalTok{(dates.s)]}\SpecialCharTok{+}\DecValTok{45}\NormalTok{)}
+\NormalTok{dates.s }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(dates.s[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{{-}} \DecValTok{45}\NormalTok{, dates.s, dates.s[}\FunctionTok{length}\NormalTok{(dates.s)] }\SpecialCharTok{+}
+    \DecValTok{45}\NormalTok{)}
 \FunctionTok{assign}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{]), VAR.DIR)}
 \ControlFlowTok{for}\NormalTok{ (t }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(dates)[}\SpecialCharTok{{-}}\FunctionTok{length}\NormalTok{(dates)]) \{}
-\NormalTok{  pos }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(dates[t]}\SpecialCharTok{==}\NormalTok{dates.s)}
-  \FunctionTok{assign}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{],}\StringTok{\textquotesingle{}.t.\textquotesingle{}}\NormalTok{,t),dates.s[pos}\SpecialCharTok{+}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{)])}
-  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.na}\NormalTok{(zz[t])) \{}
-    \FunctionTok{assign}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{],}\StringTok{\textquotesingle{}.c.\textquotesingle{}}\NormalTok{,t),}\FunctionTok{rgb}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\FunctionTok{col2rgb}\NormalTok{(missing.color),}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)}\SpecialCharTok{/}\DecValTok{255}\NormalTok{))}
-\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
-    \FunctionTok{assign}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{],}\StringTok{\textquotesingle{}.c.\textquotesingle{}}\NormalTok{,t),}\FunctionTok{rgb}\NormalTok{(}\FunctionTok{colorRamp}\NormalTok{(colours1T)(z[t])}\SpecialCharTok{/}\DecValTok{255}\NormalTok{))}
-\NormalTok{  \}}
+\NormalTok{    pos }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(dates[t] }\SpecialCharTok{==}\NormalTok{ dates.s)}
+    \FunctionTok{assign}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{], }\StringTok{".t."}\NormalTok{, t), dates.s[pos }\SpecialCharTok{+} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}
+        \DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{)])}
+    \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.na}\NormalTok{(zz[t])) \{}
+        \FunctionTok{assign}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{], }\StringTok{".c."}\NormalTok{, t), }\FunctionTok{rgb}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\FunctionTok{col2rgb}\NormalTok{(missing.color),}
+            \DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{)}\SpecialCharTok{/}\DecValTok{255}\NormalTok{))}
+\NormalTok{    \} }\ControlFlowTok{else}\NormalTok{ \{}
+        \FunctionTok{assign}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{], }\StringTok{".c."}\NormalTok{, t), }\FunctionTok{rgb}\NormalTok{(}\FunctionTok{colorRamp}\NormalTok{(colours1T)(z[t])}\SpecialCharTok{/}\DecValTok{255}\NormalTok{))}
+\NormalTok{    \}}
 \NormalTok{\}}
-\NormalTok{DATOS}\OtherTok{\textless{}{-}}\FunctionTok{select}\NormalTok{(Data, date, SV)}
-\NormalTok{DATOS}\SpecialCharTok{$}\NormalTok{date}\OtherTok{\textless{}{-}}\FunctionTok{as.Date}\NormalTok{(DATOS}\SpecialCharTok{$}\NormalTok{date)}
-\NormalTok{DATOS}\SpecialCharTok{$}\NormalTok{MAX}\OtherTok{\textless{}{-}}\NormalTok{zz}
-\NormalTok{DATOS}\SpecialCharTok{$}\NormalTok{INICIO}\OtherTok{\textless{}{-}}\FunctionTok{as.Date}\NormalTok{(DATOS}\SpecialCharTok{$}\NormalTok{date)}\SpecialCharTok{{-}}\DecValTok{46}
-\NormalTok{DATOS}\SpecialCharTok{$}\NormalTok{FINAL }\OtherTok{\textless{}{-}}\FunctionTok{as.Date}\NormalTok{(DATOS}\SpecialCharTok{$}\NormalTok{date)}\SpecialCharTok{+}\DecValTok{46}
+\NormalTok{DATOS }\OtherTok{\textless{}{-}} \FunctionTok{select}\NormalTok{(Data, date, SV)}
+\NormalTok{DATOS}\SpecialCharTok{$}\NormalTok{date }\OtherTok{\textless{}{-}} \FunctionTok{as.Date}\NormalTok{(DATOS}\SpecialCharTok{$}\NormalTok{date)}
+\NormalTok{DATOS}\SpecialCharTok{$}\NormalTok{MAX }\OtherTok{\textless{}{-}}\NormalTok{ zz}
+\NormalTok{DATOS}\SpecialCharTok{$}\NormalTok{INICIO }\OtherTok{\textless{}{-}} \FunctionTok{as.Date}\NormalTok{(DATOS}\SpecialCharTok{$}\NormalTok{date) }\SpecialCharTok{{-}} \DecValTok{46}
+\NormalTok{DATOS}\SpecialCharTok{$}\NormalTok{FINAL }\OtherTok{\textless{}{-}} \FunctionTok{as.Date}\NormalTok{(DATOS}\SpecialCharTok{$}\NormalTok{date) }\SpecialCharTok{+} \DecValTok{46}
 \ControlFlowTok{for}\NormalTok{ (t }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(dates)[}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{LARGO)]) \{}
-\NormalTok{  DATOS}\SpecialCharTok{$}\NormalTok{COLOR[t]}\OtherTok{\textless{}{-}}\FunctionTok{get}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{],}\StringTok{\textquotesingle{}.c.\textquotesingle{}}\NormalTok{,t))}
+\NormalTok{    DATOS}\SpecialCharTok{$}\NormalTok{COLOR[t] }\OtherTok{\textless{}{-}} \FunctionTok{get}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{], }\StringTok{".c."}\NormalTok{, t))}
 \NormalTok{\}}
-\NormalTok{DATOS}\SpecialCharTok{$}\NormalTok{COLOR[LARGO]}\OtherTok{\textless{}{-}}\FunctionTok{get}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{],}\StringTok{\textquotesingle{}.c.\textquotesingle{}}\NormalTok{,LARGO}\DecValTok{{-}1}\NormalTok{))}
-\NormalTok{P\_2  }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}+geom\_rect(data = DATOS,aes(xmin =as.Date(}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{\textquotesingle{}}\NormalTok{,DATOS}\SpecialCharTok{$}\NormalTok{INICIO[}\DecValTok{1}\NormalTok{],}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{), xmax =as.Date(}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{\textquotesingle{}}\NormalTok{,DATOS}\SpecialCharTok{$}\NormalTok{FINAL[}\DecValTok{1}\NormalTok{],}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{),ymin = {-}Inf, ymax = Inf),fill =}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{\textquotesingle{}}\NormalTok{,DATOS}\SpecialCharTok{$}\NormalTok{COLOR[}\DecValTok{1}\NormalTok{],}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{,alpha = 0.05, color=}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{transparent}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{)\textquotesingle{}}\NormalTok{)}
-\ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\NormalTok{LARGO)\{}
-\NormalTok{  P\_2  }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(P\_2, }\StringTok{\textquotesingle{}+geom\_rect(data = DATOS,aes(xmin =as.Date(}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{\textquotesingle{}}\NormalTok{,DATOS}\SpecialCharTok{$}\NormalTok{INICIO[j],}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{), xmax =as.Date(}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{\textquotesingle{}}\NormalTok{,DATOS}\SpecialCharTok{$}\NormalTok{FINAL[j],}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{),ymin = {-}Inf, ymax = Inf),fill =}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{\textquotesingle{}}\NormalTok{,DATOS}\SpecialCharTok{$}\NormalTok{COLOR[j],}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{,alpha = 0.05, color=}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{transparent}\SpecialCharTok{\textbackslash{}\textquotesingle{}}\StringTok{)\textquotesingle{}}\NormalTok{)}
+\NormalTok{DATOS}\SpecialCharTok{$}\NormalTok{COLOR[LARGO] }\OtherTok{\textless{}{-}} \FunctionTok{get}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(VARIABLES[}\DecValTok{2}\NormalTok{], }\StringTok{".c."}\NormalTok{, LARGO }\SpecialCharTok{{-}}
+    \DecValTok{1}\NormalTok{))}
+\NormalTok{P\_2 }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"+geom\_rect(data = DATOS,aes(xmin =as.Date(\textquotesingle{}"}\NormalTok{,}
+\NormalTok{    DATOS}\SpecialCharTok{$}\NormalTok{INICIO[}\DecValTok{1}\NormalTok{], }\StringTok{"\textquotesingle{}), xmax =as.Date(\textquotesingle{}"}\NormalTok{, DATOS}\SpecialCharTok{$}\NormalTok{FINAL[}\DecValTok{1}\NormalTok{], }\StringTok{"\textquotesingle{}),ymin = {-}Inf, ymax = Inf),fill =\textquotesingle{}"}\NormalTok{,}
+\NormalTok{    DATOS}\SpecialCharTok{$}\NormalTok{COLOR[}\DecValTok{1}\NormalTok{], }\StringTok{"\textquotesingle{},alpha = 0.05, color=\textquotesingle{}transparent\textquotesingle{})"}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\NormalTok{LARGO) \{}
+\NormalTok{    P\_2 }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(P\_2, }\StringTok{"+geom\_rect(data = DATOS,aes(xmin =as.Date(\textquotesingle{}"}\NormalTok{,}
+\NormalTok{        DATOS}\SpecialCharTok{$}\NormalTok{INICIO[j], }\StringTok{"\textquotesingle{}), xmax =as.Date(\textquotesingle{}"}\NormalTok{, DATOS}\SpecialCharTok{$}\NormalTok{FINAL[j],}
+        \StringTok{"\textquotesingle{}),ymin = {-}Inf, ymax = Inf),fill =\textquotesingle{}"}\NormalTok{, DATOS}\SpecialCharTok{$}\NormalTok{COLOR[j],}
+        \StringTok{"\textquotesingle{},alpha = 0.05, color=\textquotesingle{}transparent\textquotesingle{})"}\NormalTok{)}
 \NormalTok{\}}
 
-\NormalTok{P\_1}\OtherTok{\textless{}{-}}\StringTok{"ggplot(data = DATOS, aes(x = date, y=SV))+labs(y=}\SpecialCharTok{\textbackslash{}\textquotesingle{}\textbackslash{}\textquotesingle{}}\StringTok{, x=}\SpecialCharTok{\textbackslash{}\textquotesingle{}\textbackslash{}\textquotesingle{}}\StringTok{)"}
-\NormalTok{P  }\OtherTok{\textless{}{-}}\FunctionTok{paste0}\NormalTok{(P\_1,P\_2)}
-\NormalTok{PS }\OtherTok{\textless{}{-}} \FunctionTok{eval}\NormalTok{(}\FunctionTok{parse}\NormalTok{(}\AttributeTok{text=}\NormalTok{P))}
-\NormalTok{PS }\OtherTok{\textless{}{-}}\NormalTok{PS}\SpecialCharTok{+}\FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{color =} \StringTok{"blue"}\NormalTok{)}\SpecialCharTok{+}
-  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Tasa de crecimiento anual de las remesas en términos reales y mapa de riesgo"}\NormalTok{)}\SpecialCharTok{+}
-  \FunctionTok{geom\_hline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{yintercept=}\DecValTok{0}\NormalTok{), }\AttributeTok{color=}\StringTok{"black"}\NormalTok{,}\AttributeTok{size =} \FloatTok{1.0}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{)}
-\NormalTok{PS }\OtherTok{\textless{}{-}}\NormalTok{PS}\SpecialCharTok{+}\FunctionTok{theme\_classic}\NormalTok{()}\SpecialCharTok{+}\FunctionTok{theme}\NormalTok{(}
-  \AttributeTok{axis.line.x =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{colour =} \StringTok{"black"}\NormalTok{, }\AttributeTok{size =} \FloatTok{1.0}\NormalTok{),}
-  \AttributeTok{axis.line.y =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{colour =} \StringTok{"black"}\NormalTok{, }\AttributeTok{size =} \FloatTok{1.0}\NormalTok{),}
-  \AttributeTok{axis.line.y.right =} \FunctionTok{element\_blank}\NormalTok{(),}
-  \AttributeTok{axis.title.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{12}\NormalTok{),}
-  \AttributeTok{legend.title =} \FunctionTok{element\_blank}\NormalTok{(),}
-  \AttributeTok{legend.text  =} \FunctionTok{element\_blank}\NormalTok{(),}
-  \AttributeTok{plot.title   =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{10}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{face=}\StringTok{"bold"}\NormalTok{),}
-  \AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{size =} \FloatTok{0.5}\NormalTok{,}
-                                  \AttributeTok{linetype =} \StringTok{\textquotesingle{}solid\textquotesingle{}}\NormalTok{, }\AttributeTok{colour =} \StringTok{"\#EAEAF2"}\NormalTok{),}
-  \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{( }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{size =} \DecValTok{8}\NormalTok{),}
-  \AttributeTok{axis.text.y =} \FunctionTok{element\_text}\NormalTok{( }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{size =} \DecValTok{8}\NormalTok{)}
-\NormalTok{)}
-\NormalTok{PS }\OtherTok{\textless{}{-}}\NormalTok{PS}\SpecialCharTok{+}\FunctionTok{scale\_x\_date}\NormalTok{(}\AttributeTok{date\_breaks =} \StringTok{"24 month"}\NormalTok{, }\AttributeTok{date\_labels =} \StringTok{"\%Y"}\NormalTok{)}\SpecialCharTok{+}
-  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{50}\NormalTok{,}\DecValTok{50}\NormalTok{,}\AttributeTok{by=}\DecValTok{5}\NormalTok{), }\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{50}\NormalTok{, }\DecValTok{50}\NormalTok{))}\SpecialCharTok{+}
-  \FunctionTok{coord\_cartesian}\NormalTok{(}\AttributeTok{xlim =}  \FunctionTok{as.Date}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"2002{-}01{-}01"}\NormalTok{, }\StringTok{"2021{-}07{-}15"}\NormalTok{)))}
+\NormalTok{P\_1 }\OtherTok{\textless{}{-}} \StringTok{"ggplot(data = DATOS, aes(x = date, y=SV))+labs(y=\textquotesingle{}\textquotesingle{}, x=\textquotesingle{}\textquotesingle{})"}
+\NormalTok{P }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(P\_1, P\_2)}
+\NormalTok{PS }\OtherTok{\textless{}{-}} \FunctionTok{eval}\NormalTok{(}\FunctionTok{parse}\NormalTok{(}\AttributeTok{text =}\NormalTok{ P))}
+\NormalTok{PS }\OtherTok{\textless{}{-}}\NormalTok{ PS }\SpecialCharTok{+} \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{size =} \DecValTok{1}\NormalTok{, }\AttributeTok{color =} \StringTok{"blue"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{y =} \StringTok{"Porcentaje"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{""}\NormalTok{, }\AttributeTok{title =} \StringTok{"El Salvador: Tasa de crecimiento anual de }\SpecialCharTok{\textbackslash{}n}\StringTok{ las remesas en términos reales y mapa de riesgo"}\NormalTok{,}
+    \AttributeTok{caption =} \StringTok{"Fuente: Elaboración propia con base en Banco Central de Reserva de El Salvador."}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_hline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{0}\NormalTok{), }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{size =} \DecValTok{1}\NormalTok{,}
+        \AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{)}
+\NormalTok{PS }\OtherTok{\textless{}{-}}\NormalTok{ PS }\SpecialCharTok{+} \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.line.x =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{colour =} \StringTok{"black"}\NormalTok{,}
+    \AttributeTok{size =} \FloatTok{0.5}\NormalTok{), }\AttributeTok{axis.line.y.left =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{colour =} \StringTok{"black"}\NormalTok{,}
+    \AttributeTok{size =} \FloatTok{0.5}\NormalTok{), }\AttributeTok{axis.line.y.right =} \FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{color =} \StringTok{"black"}\NormalTok{,}
+    \AttributeTok{size =} \DecValTok{8}\NormalTok{), }\AttributeTok{axis.text.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{size =} \DecValTok{14}\NormalTok{),}
+    \AttributeTok{axis.title.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{size =} \DecValTok{18}\NormalTok{),}
+    \AttributeTok{axis.title.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{size =} \DecValTok{18}\NormalTok{),}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{16}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+    \AttributeTok{plot.caption =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{12}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{0}\NormalTok{), }\AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{size =} \FloatTok{0.5}\NormalTok{,}
+        \AttributeTok{linetype =} \StringTok{"solid"}\NormalTok{, }\AttributeTok{colour =} \StringTok{"\#EAEAF2"}\NormalTok{))}
+\NormalTok{PS }\OtherTok{\textless{}{-}}\NormalTok{ PS }\SpecialCharTok{+} \FunctionTok{scale\_x\_date}\NormalTok{(}\AttributeTok{date\_breaks =} \StringTok{"24 month"}\NormalTok{, }\AttributeTok{date\_labels =} \StringTok{"\%b{-}\%y"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{50}\NormalTok{, }\DecValTok{125}\NormalTok{, }\AttributeTok{by =} \DecValTok{25}\NormalTok{), }\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{50}\NormalTok{,}
+        \DecValTok{125}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{coord\_cartesian}\NormalTok{(}\AttributeTok{xlim =} \FunctionTok{as.Date}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"2002{-}01{-}01"}\NormalTok{,}
+    \StringTok{"2021{-}09{-}15"}\NormalTok{)))}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\FunctionTok{ggsave}\NormalTok{(}\AttributeTok{filename=}\StringTok{"SIVAR.jpg"}\NormalTok{,}
+       \AttributeTok{plot =}\NormalTok{ PS,}
+       \CommentTok{\#device = cairo\_pdf,}
+       \AttributeTok{width =} \DecValTok{297}\NormalTok{,}
+       \AttributeTok{height =} \DecValTok{210}\NormalTok{,}
+       \AttributeTok{units =} \StringTok{"mm"}\NormalTok{)}
 \NormalTok{PS}
 \end{Highlighting}
 \end{Shaded}

@@ -1,7 +1,7 @@
 --- 
 title: "INTRODUCCIÓN A LA ESTABILIDAD FINANCIERA"
 author: "LUIS ORTIZ-CEVALLOS"
-date: "2021-11-18"
+date: "2022-02-24"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
@@ -113,13 +113,13 @@ PS <- PS + geom_line(size = 1, color = "blue") + labs(y = "Porcentaje",
 PS <- PS + theme_classic() + theme(axis.line.x = element_line(colour = "black",
     size = 0.5), axis.line.y.left = element_line(colour = "black",
     size = 0.5), axis.line.y.right = element_blank(), axis.text.x = element_text(color = "black",
-    size = 14), axis.text.y = element_text(color = "black", size = 14),
+    size = 8), axis.text.y = element_text(color = "black", size = 14),
     axis.title.x = element_text(color = "black", size = 18),
     axis.title.y = element_text(color = "black", size = 18),
-    plot.title = element_text(size = 20, hjust = 0.5, face = "bold"),
+    plot.title = element_text(size = 16, hjust = 0.5, face = "bold"),
     plot.caption = element_text(size = 12, hjust = 0), panel.grid.major = element_line(size = 0.5,
         linetype = "solid", colour = "#EAEAF2"))
-PS <- PS + scale_x_date(date_breaks = "24 month", date_labels = "%b-%Y") +
+PS <- PS + scale_x_date(date_breaks = "24 month", date_labels = "%b-%y") +
     scale_y_continuous(breaks = seq(-50, 125, by = 25), limits = c(-50,
         125)) + coord_cartesian(xlim = as.Date(c("2002-01-01",
     "2021-09-15")))
@@ -136,5 +136,5 @@ ggsave(filename="SIVAR.jpg",
 PS
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+![](index_files/figure-epub3/unnamed-chunk-2-1.png)<!-- -->
 
